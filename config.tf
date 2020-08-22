@@ -27,8 +27,6 @@ resource "aws_instance" "build_instance" {
 sudo apt update && sudo apt install -y maven awscli
 git clone https://github.com/Anakin174/boxfuse.git
 cd boxfuse && mvn clean package
-export AWS_ACCESS_KEY_ID=<...placeholder...>
-export AWS_SECRET_ACCESS_KEY=<...placeholder...>
 export AWS_DEFAULT_REGION=us-east-2
 aws s3 cp target/hello-1.0.war s3://boxfuse-test-web
 EOF
@@ -45,8 +43,6 @@ resource "aws_instance" "prod_instance" {
   user_data = <<EOF
 #!/bin/bash
 sudo apt update && sudo apt install -y openjdk-8-jdk tomcat8 awscli
-export AWS_ACCESS_KEY_ID=<...placeholder...>
-export AWS_SECRET_ACCESS_KEY=<...placeholder...>
 export AWS_DEFAULT_REGION=us-east-2
 aws s3 cp s3://boxfuse-test-web/hello-1.0.war /tmp/hello-1.0.war
 sudo mv /tmp/hello-1.0.war /var/lib/tomcat8/webapps/hello-1.0.war
