@@ -18,7 +18,7 @@ resource "aws_instance" "build_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
   vpc_security_group_ids = "${var.security_group}"
-  subnet_id = "${var.subnet_id}"
+  subnet_id = "${var.vpc_id}"
   tags = {
     Name = "build"
   }
@@ -36,7 +36,7 @@ resource "aws_instance" "prod_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
   vpc_security_group_ids = "${var.security_group}"
-  subnet_id = "${var.subnet_id}"
+  subnet_id = "${var.vpc_id}"
   tags = {
     Name = "prod"
   }
