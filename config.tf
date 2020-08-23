@@ -28,18 +28,23 @@ resource "aws_instance" "build_instance" {
   tags = {
     Name = "build"
   }
+
+  #NOTE USE YOUR CREDENTIAL BUCKET
   user_data = <<EOF
 #!/bin/bash
 sudo apt update && sudo apt install -y maven awscli
 git clone https://github.com/Anakin174/boxfuse.git
 cd boxfuse && mvn clean package
-export AWS_ACCESS_KEY_ID=credential
-export AWS_SECRET_ACCESS_KEY=credential
-export AWS_DEFAULT_REGION=us-east-2
-aws s3 cp target/hello-1.0.war s3://boxfuse-test-web
+cd ~
+mkdir .aws && cd .aws
+cd .aws
+wget https://s3.us-east-2.amazonaws.com/bucket-with-config/config
+wget https://s3.us-east-2.amazonaws.com/bucket-with-config/credentials
+cd /boxfuse/target
+aws s3 cp hello-1.0.war s3://boxfuse-test-web
 EOF
 }
-
+# NOTE ^^^ PUBLIC BUCKET FOR WAR FILES
 
 resource "aws_instance" "prod_instance" {
   ami = "${var.image_id}"
@@ -52,9 +57,10 @@ resource "aws_instance" "prod_instance" {
   }
   user_data = <<EOF
 #!/bin/bash
-sudo apt update && sudo apt install -y openjdk-8-jdk tomcat8 awscli
+sudo apt update
+sudo apt install openjdk-8-jdk tomcat8 -y
 cd /var/lib/tomcat8/webapps
-wget https://s3.us-east-2.amazonaws.com/boxfuse-test-web/hello-1.0.war
-sudo systemctl restart tomcat8
+wget https://boxfuse-test-web.s3.us-east-2.amazonaws.com/hello-1.0.war
+sudo systemctl restart tomcat8.service
 EOF
 }
