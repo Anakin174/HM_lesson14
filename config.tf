@@ -33,12 +33,16 @@ resource "aws_instance" "build_instance" {
 sudo apt update && sudo apt install -y maven awscli
 git clone https://github.com/Anakin174/boxfuse.git
 cd boxfuse && mvn clean package
-export AWS_ACCESS_KEY_ID=YOU_CREDENTIAL_HERE
-export AWS_SECRET_ACCESS_KEY=YOU_CREDENTIAL_HERE
-export AWS_DEFAULT_REGION=YOU_REGION
-aws s3 cp target/hello-1.0.war s3://boxfuse-test-web
 EOF
 }
+
+resource "aws_s3_bucket_object" "war" {
+  bucket = "boxfuse-test-web"
+  key = "hello.war"
+  source = "${file("${aws_instance.build}/home/boxfuse/target/hello-1.0.war")}"
+  etag = '${md5(file("${aws_instance.build}/home/boxfuse/target/hello-1.0.war"))}'
+}
+
 
 resource "aws_instance" "prod_instance" {
   ami = "${var.image_id}"
@@ -52,11 +56,8 @@ resource "aws_instance" "prod_instance" {
   user_data = <<EOF
 #!/bin/bash
 sudo apt update && sudo apt install -y openjdk-8-jdk tomcat8 awscli
-export AWS_ACCESS_KEY_ID=YOU_CREDENTIAL_HERE
-export AWS_SECRET_ACCESS_KEY=YOU_CREDENTIAL_HERE
-export AWS_DEFAULT_REGION=YOU_REGION
-aws s3 cp s3://boxfuse-test-web/hello-1.0.war /tmp/hello-1.0.war
-sudo mv /tmp/hello-1.0.war /var/lib/tomcat8/webapps/hello-1.0.war
+cd /var/lib/tomcat8/webapps
+wget https://s3.us-east-2.amazonaws.com/boxfuse-test-web/hello-1.0.war
 sudo systemctl restart tomcat8
 EOF
 }
