@@ -16,8 +16,7 @@ variable "subnet_id" {
 }
 
 variable "ssh-key" {
-  default = "~/.ssh/id_rsa"
- # default = "file("~/.ssh/id_rsa")}"
+  default = "~/.ssh/my-key.pem"
 }
 
 
