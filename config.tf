@@ -38,7 +38,7 @@ resource "aws_instance" "build_instance" {
 sudo apt update && sudo apt install -y maven awscli
 git clone https://github.com/Anakin174/boxfuse.git
 cd boxfuse && mvn clean package
-aws s3 cp target/hello-1.0.war s3://boxfuse-test-web
+aws s3 cp target/hello-1.0.war s3://anakin174.puzzle.com
 EOF
 }
 
@@ -54,7 +54,7 @@ resource "aws_instance" "prod_instance" {
   user_data = <<EOF
 #!/bin/bash
 sudo apt update && sudo apt install -y openjdk-8-jdk tomcat8 awscli
-aws s3 cp s3://boxfuse-test-web/hello-1.0.war /tmp/hello-1.0.war
+aws s3 cp s3://anakin174.puzzle.com/hello-1.0.war /tmp/hello-1.0.war
 sudo mv /tmp/hello-1.0.war /var/lib/tomcat8/webapps/hello-1.0.war
 sudo systemctl restart tomcat8
 EOF
