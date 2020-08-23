@@ -7,9 +7,8 @@ variable "image_id" {
 }
 
 
-
 variable "security_group" {
-  default = "[sg-09ce11f213f8c6b3c]"
+  default = ["sg-09ce11f213f8c6b3c"]
 }
 
 variable "vpc_id" {
@@ -25,6 +24,7 @@ resource "aws_instance" "build_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
   key_name = "${var.ssh-key}"
+#  security_groups = [""]
   vpc_security_group_ids = "${var.security_group}"
   subnet_id = "${var.vpc_id}"
   tags = {
