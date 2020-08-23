@@ -33,14 +33,11 @@ resource "aws_instance" "build_instance" {
 sudo apt update && sudo apt install -y maven awscli
 git clone https://github.com/Anakin174/boxfuse.git
 cd boxfuse && mvn clean package
+export AWS_ACCESS_KEY_ID=credential
+export AWS_SECRET_ACCESS_KEY=credential
+export AWS_DEFAULT_REGION=us-east-2
+aws s3 cp target/hello-1.0.war s3://boxfuse-test-web
 EOF
-}
-
-resource "aws_s3_bucket_object" "war" {
-  bucket = "boxfuse-test-web"
-  key = "hello.war"
-  source = file("${aws_instance.build_instance}/boxfuse/target/hello-1.0.war")
-  etag = md5(file("${aws_instance.build_instance}/boxfuse/target/hello-1.0.war"))
 }
 
 
