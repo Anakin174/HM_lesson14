@@ -14,11 +14,15 @@ variable "vpc_id" {
   default = "vpc-ea13c881"
 }
 
+resource "ssh_key" "key" {
+  key_name       = "amazon"
+  public_key = file("~/.ssh/id_rsa/my-key.pem")
+}
 
 resource "aws_instance" "build_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
-  key_name = "${my-key("~/.ssh/id_rsa")}"
+  key_name = "${ssh_key.key}"
   vpc_security_group_ids = "${var.security_group}"
   subnet_id = "${var.vpc_id}"
   tags = {
@@ -36,7 +40,7 @@ EOF
 resource "aws_instance" "prod_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
-  key_name = "${my-key("~/.ssh/id_rsa")}"
+  key_name = "${ssh_key.key}"
   vpc_security_group_ids = "${var.security_group}"
   subnet_id = "${var.vpc_id}"
   tags = {
