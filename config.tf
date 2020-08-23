@@ -26,7 +26,7 @@ resource "aws_instance" "build_instance" {
   key_name = "${var.ssh-key}"
 #  security_groups = [""]
   vpc_security_group_ids = "${var.security_group}"
-  subnet_id = "${var.vpc_id}"
+  subnet_id = "${var.subnet_id}"
   tags = {
     Name = "build"
   }
