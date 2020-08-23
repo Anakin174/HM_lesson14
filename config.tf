@@ -38,8 +38,8 @@ cd boxfuse && mvn clean package
 cd ~
 mkdir .aws && cd .aws
 cd .aws
-wget https://s3.us-east-2.amazonaws.com/bucket-with-config/config
-wget https://s3.us-east-2.amazonaws.com/bucket-with-config/credentials
+wget https://s3.us-east-2.amazonaws.com/bucket-with-your-config/config
+wget https://s3.us-east-2.amazonaws.com/bucket-with-your-credentials/credentials
 cd /boxfuse/target
 aws s3 cp hello-1.0.war s3://boxfuse-test-web
 EOF
