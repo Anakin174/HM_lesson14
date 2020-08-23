@@ -16,7 +16,7 @@ variable "subnet_id" {
 }
 
 variable "ssh-key" {
-  default = "~/.ssh/my-key.pem"
+  default = "/home/ubuntu/my-key.pem"
 }
 
 
