@@ -11,8 +11,8 @@ variable "security_group" {
   default = ["sg-09ce11f213f8c6b3c"]
 }
 
-variable "vpc_id" {
-  default = "vpc-ea13c881"
+variable "subnet_id" {
+  default = "subnet-4a8eb730"
 }
 
 variable "ssh-key" {
@@ -44,7 +44,7 @@ resource "aws_instance" "prod_instance" {
   instance_type = "t2.micro"
   key_name = "${var.ssh-key}"
   vpc_security_group_ids = "${var.security_group}"
-  subnet_id = "${var.vpc_id}"
+  subnet_id = "${var.subnet_id}"
   tags = {
     Name = "prod"
   }
