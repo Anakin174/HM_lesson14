@@ -27,9 +27,7 @@ resource "aws_key_pair" "amazon" {
 resource "aws_instance" "build_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
-#  key_name = "${var.ssh-key}"
-  key_name = "${aws_key_pair.amazon.key_name}
-#  security_groups = [""]
+  key_name = "${aws_key_pair.amazon.key_name}"
   vpc_security_group_ids = "${var.security_group}"
   subnet_id = "${var.subnet_id}"
   tags = {
@@ -47,8 +45,7 @@ EOF
 resource "aws_instance" "prod_instance" {
   ami = "${var.image_id}"
   instance_type = "t2.micro"
-#  key_name = "${var.ssh-key}"
-  key_name = "${aws_key_pair.amazon.key_name}
+  key_name = "${aws_key_pair.amazon.key_name}"
   vpc_security_group_ids = "${var.security_group}"
   subnet_id = "${var.subnet_id}"
   tags = {
