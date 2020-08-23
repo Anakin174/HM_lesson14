@@ -39,8 +39,8 @@ EOF
 resource "aws_s3_bucket_object" "war" {
   bucket = "boxfuse-test-web"
   key = "hello.war"
-  source = "${file("${aws_instance.build}/home/boxfuse/target/hello-1.0.war")}"
-  etag = "${md5(file("${aws_instance.build}/home/boxfuse/target/hello-1.0.war"))}"
+  source = "${file("${aws_instance.build_instance}/home/boxfuse/target/hello-1.0.war")}"
+  etag = "${md5(file("${aws_instance.build_instance}/home/boxfuse/target/hello-1.0.war"))}"
 }
 
 
