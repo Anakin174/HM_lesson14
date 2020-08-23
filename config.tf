@@ -6,8 +6,10 @@ variable "image_id" {
   default = "ami-0bbe28eb2173f6167"
 }
 
+
+
 variable "security_group" {
-  default = "sg-09ce11f213f8c6b3c"
+  default = "[sg-09ce11f213f8c6b3c]"
 }
 
 variable "vpc_id" {
